@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS reports (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT NOT NULL,
+    reporter_id INT NOT NULL,
+    reason TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+    FOREIGN KEY (reporter_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; 
