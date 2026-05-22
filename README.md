@@ -63,11 +63,21 @@ Lost-Found-Hub/
 
 ---
 
-## ⚙️ Installation and Setup
+## ⚙️ How to Use & Local Setup
 
-### Prerequisites
-- **Node.js** installed on your system.
-- **MongoDB Atlas** database cluster.
+### 🌐 For General Users
+If you want to use the application to find or report items, you do not need to perform any local setup or installation. Simply access the platform live in your browser:
+👉 **[Visit the Live Application](https://lost-found-hub-mu.vercel.app)**
+
+---
+
+### 💻 For Developers (Local Setup)
+
+If you wish to clone this repository and run a local instance of the application on your computer, follow the instructions below.
+
+#### Prerequisites
+- **Node.js** (v16+ recommended) installed.
+- **MongoDB Atlas** cluster or a local MongoDB database.
 
 ### 1. Backend Setup
 1. Navigate into the backend folder:
