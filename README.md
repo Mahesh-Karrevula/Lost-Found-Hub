@@ -109,3 +109,36 @@ Lost-Found-Hub/
 
 ## 📦 Database Schemas & Auto-Increment
 - To maintain compatibility with older databases, integer `id` parameters are automatically tracked and incremented via a custom `counters` schema pre-save hook on all new document entries.
+
+---
+
+## ☁️ Deployment Guide
+
+This MERN stack application is split into a frontend SPA and backend API server. They can be deployed separately to cloud hosting providers.
+
+### 1. Deploy the Backend API (Render Example)
+1. Sign in to [Render](https://render.com) and click **New > Web Service**.
+2. Connect this GitHub repository.
+3. Configure the service settings:
+   - **Root Directory**: `backend`
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+4. Add the following **Environment Variables** in Render's console:
+   - `MONGO_URI`: `mongodb+srv://karravulamahesh_db_user:5Joj30i5GqbBVUaR@cluster0.hj6zish.mongodb.net/`
+   - `JWT_SECRET`: Any secure random string (e.g. `supersecretkey123`).
+   - `NODE_ENV`: `production`
+5. Click **Deploy Web Service** and note down the generated URL (e.g. `https://lost-found-backend.onrender.com`).
+
+### 2. Deploy the Frontend Client (Vercel Example)
+1. Sign in to [Vercel](https://vercel.com) and click **Add New > Project**.
+2. Import this GitHub repository.
+3. Configure the project settings:
+   - **Framework Preset**: `Create React App`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `build`
+4. Add the following **Environment Variable**:
+   - `REACT_APP_API_URL`: Set this to your deployed backend URL followed by `/api` (e.g., `https://lost-found-backend.onrender.com/api`).
+5. Click **Deploy**. Vercel will build the application and host your static SPA client.
+
