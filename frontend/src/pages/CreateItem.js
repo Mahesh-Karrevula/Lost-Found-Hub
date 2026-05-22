@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Compass, Navigation, MapPin, Image, Tag, AlignLeft, Info } from 'lucide-react';
+import { Navigation, MapPin, Image, Tag, AlignLeft } from 'lucide-react';
 
 const CreateItem = () => {
   const { authFetch } = useAuth();

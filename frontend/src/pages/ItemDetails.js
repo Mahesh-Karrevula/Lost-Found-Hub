@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { MessageSquare, CheckCircle, Trash2, AlertCircle, ArrowLeft, MapPin, Calendar, Tag, ShieldAlert } from 'lucide-react';
@@ -18,7 +18,7 @@ const ItemDetails = () => {
   const [reportError, setReportError] = useState('');
   const [hasReported, setHasReported] = useState(false);
 
-  const fetchItemDetails = async () => {
+  const fetchItemDetails = useCallback(async () => {
     try {
       const response = await authFetch(`/items/${id}`);
       if (response.ok) {
@@ -39,11 +39,11 @@ const ItemDetails = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, authFetch]);
 
   useEffect(() => {
     fetchItemDetails();
-  }, [id]);
+  }, [fetchItemDetails]);
 
   const handleResolve = async () => {
     if (window.confirm("Are you sure you want to mark this item as resolved?")) {

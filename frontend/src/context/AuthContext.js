@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 
 const AuthContext = createContext();
 
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchProfile();
-  }, [token]);
+  }, [token, API_URL]);
 
   const login = async (username, password) => {
     const response = await fetch(`${API_URL}/users/login`, {
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const authFetch = async (url, options = {}) => {
+  const authFetch = useCallback(async (url, options = {}) => {
     const headers = {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }) => {
       headers
     });
     return res;
-  };
+  }, [token, API_URL]);
 
   const value = {
     user,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Search, MapPin, Calendar, ArrowRight, Tag, Filter } from 'lucide-react';
@@ -15,15 +15,15 @@ const Dashboard = () => {
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
 
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async (filters = {}) => {
     setLoading(true);
     try {
       // Build query string
       const params = new URLSearchParams();
-      if (keyword) params.append('keyword', keyword);
-      if (type) params.append('type', type);
-      if (location) params.append('location', location);
-      if (date) params.append('date', date);
+      if (filters.keyword) params.append('keyword', filters.keyword);
+      if (filters.type) params.append('type', filters.type);
+      if (filters.location) params.append('location', filters.location);
+      if (filters.date) params.append('date', filters.date);
 
       const response = await authFetch(`/items?${params.toString()}`);
       if (response.ok) {
@@ -35,10 +35,10 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [authFetch]);
 
   useEffect(() => {
-    fetchItems();
+    fetchItems({});
     
     // Fetch stats for header info cards
     const fetchStats = async () => {
@@ -58,11 +58,11 @@ const Dashboard = () => {
       }
     };
     fetchStats();
-  }, []);
+  }, [fetchItems, authFetch]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    fetchItems();
+    fetchItems({ keyword, type, location, date });
   };
 
   const handleClearFilters = () => {
@@ -70,8 +70,7 @@ const Dashboard = () => {
     setType('');
     setLocation('');
     setDate('');
-    // We must fetch after clearing states
-    setTimeout(fetchItems, 0);
+    fetchItems({});
   };
 
   return (

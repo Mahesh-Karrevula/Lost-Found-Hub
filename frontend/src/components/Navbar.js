@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Bell, MessageSquare, PlusCircle, LogOut, ShieldAlert, User, Compass } from 'lucide-react';
+import { Bell, MessageSquare, PlusCircle, LogOut, ShieldAlert, Compass } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout, authFetch } = useAuth();
@@ -26,7 +26,7 @@ const Navbar = () => {
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 10000); // refresh every 10s
     return () => clearInterval(interval);
-  }, []);
+  }, [authFetch]);
 
   const handleMarkAsRead = async (id) => {
     try {

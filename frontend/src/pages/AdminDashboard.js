@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ShieldAlert, Trash2, Check, RefreshCw, AlertTriangle, AlertCircle } from 'lucide-react';
 
@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('flagged'); // 'flagged' or 'spam'
   const [loading, setLoading] = useState(true);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       // 1. Fetch item reports
@@ -40,11 +40,11 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [authFetch]);
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [fetchDashboardData]);
 
   const handleProcessReport = async (reportId, deleteItem) => {
     const actionText = deleteItem 

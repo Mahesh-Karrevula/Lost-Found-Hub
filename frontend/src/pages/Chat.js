@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Send, MessageSquare, Users, Inbox, Search } from 'lucide-react';
@@ -21,7 +21,7 @@ const Chat = () => {
   const [activeRecipient, setActiveRecipient] = useState(null);
 
   // Fetch Conversations List
-  const fetchConversations = async () => {
+  const fetchConversations = useCallback(async () => {
     try {
       const response = await authFetch('/messages/conversations');
       if (response.ok) {
@@ -34,10 +34,10 @@ const Chat = () => {
     } finally {
       setLoadingConvs(false);
     }
-  };
+  }, [authFetch]);
 
   // Fetch Messages for active conversation
-  const fetchMessages = async (convId) => {
+  const fetchMessages = useCallback(async (convId) => {
     if (!convId) return;
     try {
       const response = await authFetch(`/messages/conversations/${convId}`);
@@ -48,10 +48,10 @@ const Chat = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [authFetch]);
 
   // Fetch Users Directory
-  const fetchUsersDirectory = async () => {
+  const fetchUsersDirectory = useCallback(async () => {
     try {
       const response = await authFetch('/users');
       if (response.ok) {
@@ -61,7 +61,22 @@ const Chat = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [authFetch]);
+
+  const handleSelectConversation = useCallback((convId, currentConvs = conversations) => {
+    setActiveConvId(convId);
+    setShowUsersDirectory(false);
+
+    // Find other user details from conversations list
+    const conv = currentConvs.find(c => c.id === convId);
+    if (conv) {
+      setActiveRecipient({
+        id: conv.other_user_id,
+        username: conv.username,
+        profile_picture: conv.profile_picture
+      });
+    }
+  }, [conversations]);
 
   // Initialize
   useEffect(() => {
@@ -73,7 +88,7 @@ const Chat = () => {
       }
     });
     fetchUsersDirectory();
-  }, [location.state]);
+  }, [location.state, fetchConversations, fetchUsersDirectory, handleSelectConversation]);
 
   // Messages Polling
   useEffect(() => {
@@ -88,27 +103,12 @@ const Chat = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [activeConvId]);
+  }, [activeConvId, fetchMessages]);
 
   // Scroll to bottom helper
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const handleSelectConversation = (convId, currentConvs = conversations) => {
-    setActiveConvId(convId);
-    setShowUsersDirectory(false);
-
-    // Find other user details from conversations list
-    const conv = currentConvs.find(c => c.id === convId);
-    if (conv) {
-      setActiveRecipient({
-        id: conv.other_user_id,
-        username: conv.username,
-        profile_picture: conv.profile_picture
-      });
-    }
-  };
 
   const handleStartNewChat = async (targetUser) => {
     try {
@@ -120,7 +120,7 @@ const Chat = () => {
         const data = await response.json();
         
         // Refresh conversations list first
-        const freshConvs = await fetchConversations();
+        await fetchConversations();
         
         // Open the conversation
         setActiveConvId(data.id);
