@@ -1,52 +1,26 @@
 const mongoose = require('mongoose');
 const Counter = require('./Counter');
 
-const itemSchema = mongoose.Schema({
+const notificationSchema = mongoose.Schema({
   id: {
     type: Number,
     unique: true,
   },
-  title: {
-    type: String,
+  user_id: {
+    type: Number,
     required: true,
   },
-  description: {
+  message: {
     type: String,
     required: true,
   },
   type: {
     type: String,
     required: true,
-    enum: ['lost', 'found'], // lowercase to match PHP database values
   },
-  location: {
+  read_at: {
     type: String,
-    required: true,
-  },
-  user_id: {
-    type: Number,
-    required: true,
-  },
-  image: {
-    type: String,
-    default: '',
-  },
-  latitude: {
-    type: Number,
     default: null,
-  },
-  longitude: {
-    type: Number,
-    default: null,
-  },
-  status: {
-    type: String,
-    default: 'active',
-    enum: ['active', 'resolved'],
-  },
-  reported: {
-    type: Number,
-    default: 0,
   },
   created_at: {
     type: String,
@@ -55,11 +29,11 @@ const itemSchema = mongoose.Schema({
 });
 
 // Pre-save middleware to assign auto-increment id
-itemSchema.pre('save', async function (next) {
+notificationSchema.pre('save', async function (next) {
   if (this.isNew && !this.id) {
     try {
       const counter = await Counter.findByIdAndUpdate(
-        'items',
+        'notifications',
         { $inc: { seq: 1 } },
         { new: true, upsert: true }
       );
@@ -71,5 +45,5 @@ itemSchema.pre('save', async function (next) {
   next();
 });
 
-const Item = mongoose.model('Item', itemSchema);
-module.exports = Item;
+const Notification = mongoose.model('Notification', notificationSchema);
+module.exports = Notification;
