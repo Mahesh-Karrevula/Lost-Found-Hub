@@ -1,6 +1,10 @@
 # Lost & Found Hub 🔍
 
+[![Live Site](https://img.shields.io/badge/Live%20Demo-Vercel-brightgreen?style=for-the-badge&logo=vercel)](https://lost-found-hub-mu.vercel.app)
+
 Lost & Found Hub is a modern MERN stack (MongoDB, Express, React, Node.js) web application designed to help community members list lost or found items, coordinates of discovery, upload pictures, and chat privately to coordinate item returns.
+
+**Live Application URL**: [lost-found-hub-mu.vercel.app](https://lost-found-hub-mu.vercel.app)
 
 The application features a premium dark-themed glassmorphism interface with neon highlights, smooth transitions, and responsive styling.
 
