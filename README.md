@@ -91,7 +91,7 @@ If you wish to clone this repository and run a local instance of the application
 3. Create a `.env` file in the root of the `backend/` directory:
    ```env
    PORT=5000
-   MONGO_URI=mongodb+srv://karravulamahesh_db_user:5Joj30i5GqbBVUaR@cluster0.hj6zish.mongodb.net/
+   MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
    ```
 4. Start the backend development server:
@@ -139,7 +139,7 @@ This MERN stack application is split into a frontend SPA and backend API server.
    - **Build Command**: `npm install`
    - **Start Command**: `npm start`
 4. Add the following **Environment Variables** in Render's console:
-   - `MONGO_URI`: `mongodb+srv://karravulamahesh_db_user:5Joj30i5GqbBVUaR@cluster0.hj6zish.mongodb.net/`
+   - `MONGO_URI`: Your MongoDB connection string (e.g. `mongodb+srv://<user>:<password>@cluster.mongodb.net/dbName`).
    - `JWT_SECRET`: Any secure random string (e.g. `supersecretkey123`).
    - `NODE_ENV`: `production`
 5. Click **Deploy Web Service** and note down the generated URL (e.g. `https://lost-found-backend.onrender.com`).
